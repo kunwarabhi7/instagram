@@ -13,9 +13,9 @@ import {BiUser} from 'react-icons/bi'
 
 const Header = () => {
   return (
-    <div className="sticky top-0 shadow-md border-b bg-white z-50 ">
+    <div className="sticky top-0 shadow-sm border-b bg-white z-50 ">
       <div className="flex items-center justify-around" > 
-        <div className="relative hidden w-24 h-24 cursor-pointer lg:inline-grid">
+        <div className="relative hidden w-24 h-12 cursor-pointer lg:inline-grid">
           <Image src={ig} fill objectFit="contain" />
         </div>
         <div className="relative w-10 h-10 cursor-pointer lg:hidden">
