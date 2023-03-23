@@ -1,7 +1,8 @@
 import React from 'react'
 import { AiOutlineHeart } from 'react-icons/ai'
 import { FaRegCommentDots } from 'react-icons/fa'
-import { TbSend } from 'react-icons/tb'
+import { TbSend } from 'react-icons/tb' 
+import { BiHappyAlt } from 'react-icons/bi' 
 
 const Post = ({id,username,img,userImg , caption}) => {
   return (
@@ -47,6 +48,11 @@ const Post = ({id,username,img,userImg , caption}) => {
           tour! So much to see! Make sure you bring a good camera when you go!
         </div>
       </div>
+      <form className='flex items-center p-4'>
+<BiHappyAlt size={20}/>
+<input type="text" placeholder='Add a comment ....' className='border-none flex-1 focus:ring-0 outline-none'/>
+<button className='font-semibold text-blue-400' >Post</button>
+      </form>
     </div>
   </div>
 </>
