@@ -1,5 +1,7 @@
 import Stories from './Stories'
 import Posts from './Posts'
+import MiniProfile from './MiniProfile'
+
 
 const Feed = () => {
   return (
@@ -11,7 +13,7 @@ const Feed = () => {
       {/* Post */}
       <Posts />        </section>
         <section className='col-span-1 '>
-            profile
+            <MiniProfile />
             {/* profile */}
             {/* Suggestion */}
         </section>
