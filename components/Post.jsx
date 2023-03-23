@@ -1,9 +1,12 @@
 import React from 'react'
+import { AiOutlineHeart } from 'react-icons/ai'
+import { FaRegCommentDots } from 'react-icons/fa'
+import { TbSend } from 'react-icons/tb'
 
 const Post = ({id,username,img,userImg , caption}) => {
   return (
     <>
-  <div key={id} className=" rounded overflow-hidden border w-full lg:w-6/12 md:w-6/12 bg-white mx-3 md:mx-0 lg:mx-0">
+  <div key={id} className=" rounded overflow-hidden border w-full  bg-white mt-2">
     <div className="w-full flex justify-between p-3">
       <div className="flex">
         <div className="rounded-full h-8 w-8 bg-gray-500 flex items-center justify-center overflow-hidden">
@@ -23,8 +26,10 @@ const Post = ({id,username,img,userImg , caption}) => {
       src={img}
     />
     <div className="px-3 pb-2">
-      <div className="pt-2">
-        <i className="far fa-heart cursor-pointer" />
+      <div className="pt-2 flex space-x-2 items-center ">
+        <AiOutlineHeart size={25} className="far fa-heart cursor-pointer" />
+        <FaRegCommentDots size={25} className="far fa-heart cursor-pointer" />
+        <TbSend size={25} className="far fa-heart cursor-pointer" />
         <span className="text-sm text-gray-400 font-medium">12 likes</span>
       </div>
       <div className="pt-1">

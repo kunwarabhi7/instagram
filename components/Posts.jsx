@@ -18,7 +18,7 @@ const DummyData = [
 ];
 function Posts() {
   return (
-    <div>
+    <div className="">
       {DummyData.map(( post ) => (
         <Post
           key={post.id}
