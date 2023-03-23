@@ -32,10 +32,11 @@ const Suggestions = () => {
                 className="w-10 h-10 rounded-full border p-[2px]"
                 src="faker.image.avatar()"
               />
-              <div className="flex-1 ml-4">
+              <div className="flex-1 flex-row ml-4">
 
               <h2 className="font-semibold text-sm">{faker.internet.userName()}</h2>{" "}
              <h2 className="text-xs text-gray-400">Works at</h2>
+              <button className="text-blue-400 font-bold text-sm">Follow</button>
               </div>
             </div>
           ))}
