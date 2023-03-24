@@ -8,10 +8,13 @@ import {VscDiffAdded} from 'react-icons/vsc'
 import {RiSendPlaneFill} from 'react-icons/ri'
 import {FaRegCompass} from 'react-icons/fa'
 import {BiUser} from 'react-icons/bi'
+import {useSession , signIn , signOut} from 'next-auth/react'
 
 
 
 const Header = () => {
+  const {data:session} = useSession()
+  
   return (
     <div className="sticky top-0 shadow-sm border-b bg-white z-50 ">
       <div className="flex items-center justify-around" > 
@@ -35,13 +38,16 @@ const Header = () => {
           </div>
         </div>
         {/* Right */}
-        <div className="flex items-center justify-evenly space-x-4 cursor-pointer">
+        {session ? <div className="flex items-center justify-evenly space-x-4 cursor-pointer">
           <AiFillHome size={25}/>
           <RiSendPlaneFill size={25}/>
           <VscDiffAdded size={25}/>
           <FaRegCompass size={25}/>
-          <BiUser size={25}/>
-        </div>
+          <img src={session?.user?.image} onClick={signOut} className='h-8 rounded-full cursor-pointer' />
+        </div> : 
+        <button onClick={signIn}>Sign IN</button>
+        }
+        
       </div>
     </div>
   );
