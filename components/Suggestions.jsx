@@ -21,7 +21,7 @@ const Suggestions = () => {
         <h3 className="text-sm font-bold  text-gray-400">
           Suggestions for you
         </h3>
-        <button className="text-gray-600 font-semibold">See All</button>
+        <button className="text-gray-600 font-semibold -mt-5">See All</button>
        
           {suggestions.map((profile) => (
             <div
