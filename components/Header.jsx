@@ -6,14 +6,16 @@ import {BsSearch  } from 'react-icons/bs'
 import {AiFillHome} from 'react-icons/ai'
 import {VscDiffAdded} from 'react-icons/vsc'
 import {RiSendPlaneFill} from 'react-icons/ri'
-import {FaRegCompass} from 'react-icons/fa'
-import {BiUser} from 'react-icons/bi'
+import {FaRegCompass} from 'react-icons/fa' 
 import {useSession , signIn , signOut} from 'next-auth/react'
+import { useRecoilState } from "recoil";
+import modalState from "../atoms/modalAtoms";
 
 
 
 const Header = () => {
   const {data:session} = useSession()
+  const [open,setOpen] = useRecoilState(modalState)
   
   return (
     <div className="sticky top-0 shadow-sm border-b bg-white z-50 ">
@@ -41,7 +43,7 @@ const Header = () => {
         {session ? <div className="flex items-center justify-evenly space-x-4 cursor-pointer">
           <AiFillHome size={25}/>
           <RiSendPlaneFill size={25}/>
-          <VscDiffAdded size={25}/>
+          <VscDiffAdded onClick={()=>{setOpen(true)}} size={25}/>
           <FaRegCompass size={25}/>
           <img src={session?.user?.image} onClick={signOut} className='h-8 rounded-full cursor-pointer' />
         </div> : 

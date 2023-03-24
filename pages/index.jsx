@@ -2,6 +2,7 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Feed from "../components/Feed";
 import { getSession } from "next-auth/react";
+import Modal from "../components/Modal";
 
 
 const Home = () => {
@@ -14,6 +15,7 @@ const Home = () => {
       </Head>
       <Header />
       <Feed />
+      <Modal />
     </div>
   );
 };
