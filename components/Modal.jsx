@@ -1,19 +1,24 @@
-import React from 'react'
+import React, { useRef ,Fragment, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import modalState from '../atoms/modalAtoms'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import {FcCamcorderPro} from 'react-icons/fc'
 
 const Modal = () => {
     const [open,setOpen] = useRecoilState(modalState)
-    
-     
+    const filePickerRef = useRef(null)
+    const [selectedFile, setSelectedFile] =  useState(null)
   function closeModal() {
     setOpen(false)
   }
 
   function openModal() {
     setOpen(true)
+  }
+
+  const addImageToPost = (e) =>{
+    e.preventDefault()
+
   }
 
   return (
@@ -50,14 +55,26 @@ const Modal = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Payment successful
+                    Create a Post
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Your payment has been successfully submitted. We’ve sent
-                      you an email with all of the details of your order.
-                    </p>
+                  <div className="mt-2 "
+                   onClick={()=>filePickerRef?.current?.click()}
+                   > <FcCamcorderPro className='ml-44 cursor-pointer' size={30}/>
+                    
                   </div>
+                  <div className='mt-2'  >
+                        <input type="text"
+                        // ref={captionRef}
+                        className='border-none focus:ring-0 w-full text-center' placeholder='Enter a caption'/>
+                    </div>
+                  <div >
+                    <input type='file'  
+                    // onChange={addImageToPost} 
+                    hidden 
+                    ref={filePickerRef} 
+                    />
+                  </div>
+                
 
                   <div className="mt-4">
                     <button
@@ -65,7 +82,7 @@ const Modal = () => {
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
-                      Got it, thanks!
+                     Upload Post
                     </button>
                   </div>
                 </Dialog.Panel>
