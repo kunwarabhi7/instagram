@@ -1,30 +1,33 @@
-import React, { useRef ,Fragment, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import modalState from '../atoms/modalAtoms'
-import { Dialog, Transition } from '@headlessui/react'
-import {FcCamcorderPro} from 'react-icons/fc'
+import React, { useRef, Fragment, useState } from "react";
+import { useRecoilState } from "recoil";
+import modalState from "../atoms/modalAtoms";
+import { Dialog, Transition } from "@headlessui/react";
+import { FcCamcorderPro } from "react-icons/fc";
 
 const Modal = () => {
-    const [open,setOpen] = useRecoilState(modalState)
-    const filePickerRef = useRef(null)
-    const [selectedFile, setSelectedFile] =  useState(null)
+  const [open, setOpen] = useRecoilState(modalState);
+  const filePickerRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   function closeModal() {
-    setOpen(false)
+    setOpen(false);
   }
 
   function openModal() {
-    setOpen(true)
+    setOpen(true);
   }
 
-  const addImageToPost = (e) =>{
-    e.preventDefault()
-
-  }
+  const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
+  };
 
   return (
     <>
-      
-
       <Transition appear show={open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
@@ -57,24 +60,41 @@ const Modal = () => {
                   >
                     Create a Post
                   </Dialog.Title>
-                  <div className="mt-2 "
-                   onClick={()=>filePickerRef?.current?.click()}
-                   > <FcCamcorderPro className='ml-44 cursor-pointer' size={30}/>
-                    
-                  </div>
-                  <div className='mt-2'  >
-                        <input type="text"
-                        // ref={captionRef}
-                        className='border-none focus:ring-0 w-full text-center' placeholder='Enter a caption'/>
+                  {selectedFile ? 
+                    <img
+                      src={selectedFile}
+                      className="w-full object-contain cursor-pointer"
+                      onClick={() => setSelectedFile(null)}
+                    />
+                   : 
+                    <div
+                      className="mt-2 "
+                      onClick={() => filePickerRef?.current?.click()}
+                    >
+                      {" "}
+                      <FcCamcorderPro
+                        className="ml-44 cursor-pointer"
+                        size={30}
+                      />
                     </div>
-                  <div >
-                    <input type='file'  
-                    // onChange={addImageToPost} 
-                    hidden 
-                    ref={filePickerRef} 
+                  }
+
+                  <div className="mt-2">
+                    <input
+                      type="text"
+                      // ref={captionRef}
+                      className="border-none focus:ring-0 w-full text-center"
+                      placeholder="Enter a caption"
                     />
                   </div>
-                
+                  <div>
+                    <input
+                      type="file"
+                      onChange={addImageToPost}
+                      hidden
+                      ref={filePickerRef}
+                    />
+                  </div>
 
                   <div className="mt-4">
                     <button
@@ -82,7 +102,7 @@ const Modal = () => {
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
-                     Upload Post
+                      Upload Post
                     </button>
                   </div>
                 </Dialog.Panel>
@@ -91,9 +111,8 @@ const Modal = () => {
           </div>
         </Dialog>
       </Transition>
+    </>
+  );
+};
 
-        </>
-  )
-}
-
-export default Modal
+export default Modal;
