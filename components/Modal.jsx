@@ -3,11 +3,26 @@ import { useRecoilState } from "recoil";
 import modalState from "../atoms/modalAtoms";
 import { Dialog, Transition } from "@headlessui/react";
 import { FcCamcorderPro } from "react-icons/fc";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+
+import { useSession } from "next-auth/react";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { db, storage } from "../utils/firebase";
 
 const Modal = () => {
+  const { data: session } = useSession();
   const [open, setOpen] = useRecoilState(modalState);
   const filePickerRef = useRef(null);
+  const captionRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   function closeModal() {
     setOpen(false);
   }
@@ -24,6 +39,32 @@ const Modal = () => {
     reader.onload = (readerEvent) => {
       setSelectedFile(readerEvent.target.result);
     };
+  };
+
+  const UploadPost = async () => {
+    if (loading) return;
+    setLoading(true);
+
+    const docRef = await addDoc(collection(db, "posts"), {
+      username: session.user.email,
+      caption: captionRef.current.value,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+    console.log("New Doc added with id", docRef.id);
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+    await uploadString(imageRef, selectedFile, "data_url").then(
+      async (snapshot) => {
+        const downloadURL = await getDownloadURL(imageRef);
+
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      }
+    );
+    setOpen(false);
+    setLoading(false);
+    setSelectedFile(null);
   };
 
   return (
@@ -60,13 +101,13 @@ const Modal = () => {
                   >
                     Create a Post
                   </Dialog.Title>
-                  {selectedFile ? 
+                  {selectedFile ? (
                     <img
                       src={selectedFile}
                       className="w-full object-contain cursor-pointer"
                       onClick={() => setSelectedFile(null)}
                     />
-                   : 
+                  ) : (
                     <div
                       className="mt-2 "
                       onClick={() => filePickerRef?.current?.click()}
@@ -77,12 +118,12 @@ const Modal = () => {
                         size={30}
                       />
                     </div>
-                  }
+                  )}
 
                   <div className="mt-2">
                     <input
                       type="text"
-                      // ref={captionRef}
+                      ref={captionRef}
                       className="border-none focus:ring-0 w-full text-center"
                       placeholder="Enter a caption"
                     />
@@ -98,11 +139,12 @@ const Modal = () => {
 
                   <div className="mt-4">
                     <button
+                      disabled={!selectedFile}
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
+                      onClick={UploadPost}
                     >
-                      Upload Post
+                      {loading ? "Uploading..." : "Upload Post"}
                     </button>
                   </div>
                 </Dialog.Panel>
