@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { useSession } from "next-auth/react";
+import Moment from "react-moment";
 
 const Post = ({ id, username, img, userImg, caption }) => {
   const { data: session } = useSession();
@@ -82,10 +83,13 @@ const Post = ({ id, username, img, userImg, caption }) => {
 
           
           {comments.length > 0 && (
-            <div>
+            <>
                 <div className="text-sm mb-2 text-gray-400 cursor-pointer font-medium">
                 View all {comments.length} comments
               </div>
+              <div className="ml-10 h-20 overflow-y-scroll ">
+
+              
               {comments.map((comment) => (
                 <>
                 <div key={comment.id} className="mb-3 flex items-center space-x-2 ">
@@ -96,10 +100,13 @@ const Post = ({ id, username, img, userImg, caption }) => {
                     </span>{" "}
                     {comment.data().comment}
                   </div>
+                  <Moment className="pl-5 text-xs" fromNow>{comment.data().timeStamp?.toDate()}</Moment>
                 </div>
+                
                 </>
               ))}
-            </div>
+              </div>
+            </>
           )}
           {/* Input Comment */}
           <form className="flex items-center p-4">
