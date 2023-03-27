@@ -9,24 +9,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
-import { COOKIE_NAME_PRERENDER_BYPASS } from "next/dist/server/api-utils";
 
-const DummyData = [
-  {
-    id: "123",
-    username: "kunwarabhi7",
-    userImg: "https://avatars0.githubusercontent.com/u/38799309?v=4",
-    img: "https://3.bp.blogspot.com/-Chu20FDi9Ek/WoOD-ehQ29I/AAAAAAAAK7U/mc4CAiTYOY8VzOFzBKdR52aLRiyjqu0MwCLcBGAs/s1600/DSC04596%2B%25282%2529.JPG",
-    caption: "Jai Rajputana",
-  },
-  {
-    id: "123",
-    username: "kunwarabhi7",
-    userImg: "https://avatars0.githubusercontent.com/u/38799309?v=4",
-    img: "https://3.bp.blogspot.com/-Chu20FDi9Ek/WoOD-ehQ29I/AAAAAAAAK7U/mc4CAiTYOY8VzOFzBKdR52aLRiyjqu0MwCLcBGAs/s1600/DSC04596%2B%25282%2529.JPG",
-    caption: "Jai Rajputana",
-  },
-];
 function Posts() {
   const [posts, setPosts] = useState([]);
   useEffect(
