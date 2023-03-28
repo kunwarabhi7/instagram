@@ -19,6 +19,7 @@ const Post = ({ id, username, img, userImg, caption }) => {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState([]);
 
   const sendComments = async (e) => {
     e.preventDefault();
@@ -81,30 +82,35 @@ const Post = ({ id, username, img, userImg, caption }) => {
             </div>
           </div>
 
-          
           {comments.length > 0 && (
             <>
-                <div className="text-sm mb-2 text-gray-400 cursor-pointer font-medium">
+              <div className="text-sm mb-2 text-gray-400 cursor-pointer font-medium">
                 View all {comments.length} comments
               </div>
               <div className="ml-10 h-20 overflow-y-scroll ">
-
-              
-              {comments.map((comment) => (
-                <>
-                <div key={comment.id} className="mb-3 flex items-center space-x-2 ">
-                    <img src={comment.data().userImage} alt="" className="h-7 rounded-full "/>
-                  <div className="mb-2 text-sm">
-                    <span className="font-medium mr-2">
-                      {comment.data().userName}
-                    </span>{" "}
-                    {comment.data().comment}
-                  </div>
-                  <Moment className="pl-5 text-xs" fromNow>{comment.data().timeStamp?.toDate()}</Moment>
-                </div>
-                
-                </>
-              ))}
+                {comments.map((comment) => (
+                  <>
+                    <div
+                      key={comment.id}
+                      className="mb-3 flex items-center space-x-2 "
+                    >
+                      <img
+                        src={comment.data().userImage}
+                        alt=""
+                        className="h-7 rounded-full "
+                      />
+                      <div className="mb-2 text-sm">
+                        <span className="font-medium mr-2">
+                          {comment.data().userName}
+                        </span>{" "}
+                        {comment.data().comment}
+                      </div>
+                      <Moment className="pl-5 text-xs" fromNow>
+                        {comment.data().timeStamp?.toDate()}
+                      </Moment>
+                    </div>
+                  </>
+                ))}
               </div>
             </>
           )}
