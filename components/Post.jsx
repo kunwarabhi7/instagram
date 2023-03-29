@@ -6,10 +6,12 @@ import { BiHappyAlt } from "react-icons/bi";
 import {
   addDoc,
   collection,
+  doc,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  setDoc,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
 import { useSession } from "next-auth/react";
@@ -20,7 +22,7 @@ const Post = ({ id, username, img, userImg, caption }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
-
+// console.log('current session is', session.user.uid)
   const sendComments = async (e) => {
     e.preventDefault();
     const commentToSend = comment;
@@ -45,8 +47,22 @@ const Post = ({ id, username, img, userImg, caption }) => {
         }
       ),
 
-    [db]
+    [db, id]
   );
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapShot) =>
+        setLikes(snapShot.docs)
+      ),
+    [db, id]
+  );
+
+  const likePost = async () => {
+    await setDoc(doc(db, "posts", id, "likes", session?.user?.email), {
+      username: session.user.email,
+    });
+  };
 
   return (
     <>
@@ -68,7 +84,11 @@ const Post = ({ id, username, img, userImg, caption }) => {
         <img className="w-full bg-cover" src={img} />
         <div className="px-3 pb-2">
           <div className="pt-2 flex space-x-2 items-center ">
-            <AiOutlineHeart size={25} className="far fa-heart cursor-pointer" />
+            <AiOutlineHeart
+              onClick={likePost}
+              size={25}
+              className="far fa-heart cursor-pointer"
+            />
             <FaRegCommentDots
               size={25}
               className="far fa-heart cursor-pointer"
