@@ -6,6 +6,7 @@ import { BiHappyAlt } from "react-icons/bi";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   orderBy,
@@ -22,7 +23,8 @@ const Post = ({ id, username, img, userImg, caption }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
-// console.log('current session is', session.user.uid)
+  const[hasLiked,setHasLiked] = useState(false);
+console.log('current session is', session.user.email)
   const sendComments = async (e) => {
     e.preventDefault();
     const commentToSend = comment;
@@ -44,6 +46,7 @@ const Post = ({ id, username, img, userImg, caption }) => {
         ),
         (snapShot) => {
           setComments(snapShot.docs);
+          
         }
       ),
 
@@ -58,10 +61,20 @@ const Post = ({ id, username, img, userImg, caption }) => {
     [db, id]
   );
 
+  useEffect(()=>{
+setHasLiked(likes.findIndex(like=>like.id===session?.user?.email)!== -1)
+  },[likes])
+
   const likePost = async () => {
-    await setDoc(doc(db, "posts", id, "likes", session?.user?.email), {
-      username: session.user.email,
-    });
+    if(hasLiked){
+      await deleteDoc(doc(db,'posts',id,'likes',session?.user?.email))
+
+    }else{
+    }
+      await setDoc(doc(db, "posts", id, "likes", session?.user?.email), {
+        username: session.user.email,
+      });
+
   };
 
   return (

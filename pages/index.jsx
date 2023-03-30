@@ -4,7 +4,6 @@ import Feed from "../components/Feed";
 import { getSession } from "next-auth/react";
 import Modal from "../components/Modal";
 
-
 const Home = () => {
 
   return (
@@ -26,7 +25,7 @@ export default Home;
 export async function getServerSideProps(context) {
 const session = await getSession(context)
 
-  if (!session) {
+  if (session) {
     return {
       redirect: {
         destination: '/auth/signin',
